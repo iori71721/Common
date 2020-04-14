@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.iori.custom.common.repeatModel.CycleModel;
 import com.iori.custom.common.repeatModel.RetryModel;
 
 public class MainActivity extends AppCompatActivity {

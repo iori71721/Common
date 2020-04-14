@@ -1,4 +1,4 @@
-package com.iori.custom.common;
+package com.iori.custom.common.repeatModel;
 
 import android.os.Handler;
 
