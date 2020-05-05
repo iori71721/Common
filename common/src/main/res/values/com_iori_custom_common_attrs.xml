@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="com_iori_custom_common_CycleColorView">
+        <attr name="cycleColor" format="color"/>
+        <attr name="frameColor" format="color" />
+        <attr name="framePadding" format="dimension" />
+        <attr name="frameWidth" format="dimension" />
+    </declare-styleable>
+</resources>
