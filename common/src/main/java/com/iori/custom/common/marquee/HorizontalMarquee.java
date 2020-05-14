@@ -26,7 +26,7 @@ public class HorizontalMarquee {
     public int moveStep;
     public int marqueeWidth=0;
     private final MoveBehavior moveBehavior;
-    private boolean stop;
+    private boolean stop=true;
 
     public HorizontalMarquee(@MoveType int moveType, int startPosition, int endPosition, int marqueeWidth, MoveBehavior moveBehavior) {
         this.moveType = moveType;
