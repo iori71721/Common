@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.iori.custom.common.executeModel.SingleExecuteModel;
 import com.iori.custom.common.repeatModel.CycleModel;
 import com.iori.custom.common.repeatModel.RetryModel;
 
@@ -19,8 +20,48 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         handler=new Handler();
 //        testCycleModel();
-        testRetryModel();
+//        testRetryModel();
+        testSingleExecuteModel();
     }
+
+    private void testSingleExecuteModel(){
+        final SingleExecuteModel singleExecuteModel=new SingleExecuteModel();
+        singleExecuteModel.setSingleExecuteBehavior(new SingleExecuteModel.SingleExecuteBehavior() {
+            @Override
+            public void execute() {
+                for(int i=0;i<100;i++){
+                    Log.d("iori", "execute: "+i+" thread id "+Thread.currentThread().getId()+" name "+Thread.currentThread().getName());
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if(i == 99) {
+                        singleExecuteModel.finish();
+                    }
+                }
+            }
+        });
+
+        Runnable testRunnable=new Runnable() {
+            @Override
+            public void run() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        singleExecuteModel.execute();
+                    }
+                }).start();
+            }
+        };
+        int delayTime=0;
+        int stepTime=15000;
+        for(int i=0;i<10;i++) {
+            delayTime+=stepTime;
+            handler.postDelayed(testRunnable,delayTime);
+        }
+    }
+
     private void testRetryModel(){
         RetryModel retryModel=new RetryModel(new RetryModel.RetryBehavior() {
             @Override
