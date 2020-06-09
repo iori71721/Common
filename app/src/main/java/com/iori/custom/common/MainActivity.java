@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.iori.custom.common.executeModel.SingleExecuteModel;
+import com.iori.custom.common.reflect.ReflectHelper;
 import com.iori.custom.common.repeatModel.CycleModel;
 import com.iori.custom.common.repeatModel.RetryModel;
 
@@ -21,7 +22,31 @@ public class MainActivity extends AppCompatActivity {
         handler=new Handler();
 //        testCycleModel();
 //        testRetryModel();
-        testSingleExecuteModel();
+//        testSingleExecuteModel();
+        testReflectHelper();
+    }
+
+    private void testReflectHelper(){
+        CycleModel cycleModel=new CycleModel(new Handler(), new CycleModel.CycleExecute() {
+            @Override
+            public void cycleExecute(CycleModel cycleModel) {
+
+            }
+        });
+
+        Log.d("iori", "testReflectHelper: original delayTimems "+cycleModel.getDelayTimems());
+
+        ReflectHelper.setValue(cycleModel, CycleModel.class, "delayTimems", 1500L, new ReflectHelper.ReflectParser<Long>() {
+            @Override
+            public Long parse(Object parseObject) {
+                return Long.parseLong(parseObject.toString());
+            }
+        });
+
+        long reflectDelayTimems=ReflectHelper.getValue(cycleModel,CycleModel.class,"delayTimems",Long.class);
+
+        Log.d("iori", "testReflectHelper: reflectDelayTimems "+reflectDelayTimems);
+
     }
 
     private void testSingleExecuteModel(){
