@@ -21,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         handler=new Handler();
 //        testCycleModel();
-//        testRetryModel();
+        testRetryModel();
 //        testSingleExecuteModel();
-        testReflectHelper();
+//        testReflectHelper();
     }
 
     private void testReflectHelper(){
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         });
         int retryCount=5;
         retryModel.setRetryCount(5);
+        retryModel.delayMs=2000;
         for(int i=0;i<retryCount+1;i++){
             retryModel.retry();
             try {
@@ -110,19 +111,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Log.d("iori", "testRetryModel: after retryfail execute retry ");
-        retryModel.retry();
-        Log.d("iori", "testRetryModel: after retryfail execute retry 1");
-        retryModel.retry();
-        Log.d("iori", "testRetryModel: after retryfail execute retry 2");
-
-        Log.d("iori", "testRetryModel: reset ");
+        Log.d("iori", "testRetryModel: model reset");
         retryModel.reset();
-        Log.d("iori", "testRetryModel: after reset execute retry 1");
         retryModel.retry();
-        Log.d("iori", "testRetryModel: after reset execute retry 2");
-        retryModel.retry();
-
     }
 
     private void testCycleModel(){
