@@ -15,6 +15,7 @@ import com.iori.custom.common.repeatModel.RetryModel;
 public class MainActivity extends AppCompatActivity {
     private int cycleCount;
     private Handler handler;
+    RetryModel retryModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void testRetryModel(){
-        RetryModel retryModel=new RetryModel(new RetryModel.RetryBehavior() {
+        final int retryCount=5;
+        final int delayMs=0;
+        retryModel=new RetryModel(new RetryModel.RetryBehavior() {
             @Override
             public void retry(int alreadyRetryCount) {
                 Log.d("iori", "behavior retry: already retry "+alreadyRetryCount);
@@ -97,23 +100,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void retryFail(int alreadyRetryCount) {
                 Log.d("iori", "behavior retryFail: "+alreadyRetryCount);
+                Log.d("iori", "retryFail: reset model to do retry ");
+                retryModel.reset();
+                retryModel.setRetryCount(retryCount);
+                retryModel.delayMs=delayMs;
+                retryModel.retry();
+
             }
         });
-        int retryCount=5;
-        retryModel.setRetryCount(5);
-        retryModel.delayMs=2000;
-        for(int i=0;i<retryCount+1;i++){
-            retryModel.retry();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        retryModel.setRetryCount(retryCount);
+        retryModel.delayMs=delayMs;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    Log.d("iori", "run: trigger retry");
+                    retryModel.retry();
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }
-
-        Log.d("iori", "testRetryModel: model reset");
-        retryModel.reset();
-        retryModel.retry();
+        }).start();
     }
 
     private void testCycleModel(){

@@ -3,9 +3,11 @@ package com.iori.custom.common.repeatModel;
 import android.util.Log;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 
 public class RetryModel {
+    private static final String TAG=RetryModel.class.getName();
     private int retryCount;
     private int alreadyReConnectCount;
     private final RetryBehavior retryBehavior;
@@ -13,7 +15,6 @@ public class RetryModel {
     private boolean firstRetry=true;
     private final Timer timer;
     private long lastRetryTime;
-    private long nextDelayRetryTime;
 
     public RetryModel(RetryBehavior retryBehavior) {
         this.retryBehavior = retryBehavior;
@@ -25,7 +26,6 @@ public class RetryModel {
         firstRetry=true;
         delayMs=0;
         lastRetryTime=0;
-        nextDelayRetryTime=0;
     }
 
     private void executeRetry(){
@@ -42,10 +42,8 @@ public class RetryModel {
         long currentRetryTime=Calendar.getInstance().getTimeInMillis();
         long canExecuteTime=lastRetryTime+delayMs;
         boolean canExecute=false;
-        if(currentRetryTime > canExecuteTime){
-            if(currentRetryTime > nextDelayRetryTime){
+        if(currentRetryTime >= canExecuteTime){
                 canExecute=true;
-            }
         }
         return canExecute;
     }
@@ -57,8 +55,9 @@ public class RetryModel {
         }else{
             if(delayMs>0) {
                 if(canExecuteDelayRetry()) {
-                    nextDelayRetryTime=Calendar.getInstance().getTimeInMillis()+delayMs;
                     executeRetry();
+                }else{
+                    Log.d(TAG, "retry: delay retry too early last retry time "+new Date(lastRetryTime));
                 }
             }else {
                 executeRetry();
