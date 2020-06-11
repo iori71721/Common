@@ -2,9 +2,8 @@ package com.iori.custom.common.repeatModel;
 
 import android.util.Log;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class RetryModel {
     private static final String TAG=RetryModel.class.getName();
@@ -14,7 +13,7 @@ public class RetryModel {
     public int delayMs;
     private boolean firstRetry=true;
     private final Timer timer;
-    private long lastRetryTime;
+    private int delayRetryCount=0;
 
     public RetryModel(RetryBehavior retryBehavior) {
         this.retryBehavior = retryBehavior;
@@ -24,28 +23,32 @@ public class RetryModel {
     public void reset(){
         alreadyReConnectCount=0;
         firstRetry=true;
-        delayMs=0;
-        lastRetryTime=0;
+        delayRetryCount=0;
     }
 
     private void executeRetry(){
         alreadyReConnectCount++;
         if(alreadyReConnectCount <= retryCount){
             retryBehavior.retry(alreadyReConnectCount);
+            executeDelayRetry();
         }else{
             retryBehavior.retryFail(alreadyReConnectCount);
         }
-        lastRetryTime= Calendar.getInstance().getTimeInMillis();
     }
 
-    private boolean canExecuteDelayRetry(){
-        long currentRetryTime=Calendar.getInstance().getTimeInMillis();
-        long canExecuteTime=lastRetryTime+delayMs;
-        boolean canExecute=false;
-        if(currentRetryTime >= canExecuteTime){
-                canExecute=true;
+    private void executeDelayRetry(){
+        if(delayRetryCount > 0){
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    delayRetryCount--;
+                    if(delayRetryCount < 0){
+                        delayRetryCount=0;
+                    }
+                    executeRetry();
+                }
+            },delayMs);
         }
-        return canExecute;
     }
 
     public void retry(){
@@ -54,10 +57,9 @@ public class RetryModel {
             firstRetry=false;
         }else{
             if(delayMs>0) {
-                if(canExecuteDelayRetry()) {
-                    executeRetry();
-                }else{
-                    Log.d(TAG, "retry: delay retry too early last retry time "+new Date(lastRetryTime));
+                delayRetryCount++;
+                if(delayRetryCount == 1) {
+                    executeDelayRetry();
                 }
             }else {
                 executeRetry();
@@ -74,6 +76,14 @@ public class RetryModel {
             retryCount=0;
         }
         this.retryCount = retryCount;
+    }
+
+    public int getDelayRetryCount() {
+        return delayRetryCount;
+    }
+
+    public int getAlreadyReConnectCount() {
+        return alreadyReConnectCount;
     }
 
     public static interface RetryBehavior{
