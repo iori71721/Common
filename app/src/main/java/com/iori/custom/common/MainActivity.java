@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,11 +26,34 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
     private RetryModel retryModel;
     private Screenshoter screenShoter;
+    private Button topPopWindow;
+    private Button cycleTopPopWindow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity);
         handler=new Handler();
+        topPopWindow=findViewById(R.id.topPopWindow);
+        topPopWindow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,TopPopwindowActviity.class));
+            }
+        });
+
+        cycleTopPopWindow=findViewById(R.id.cycleTopPopWindow);
+        cycleTopPopWindow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,CycleTopPopWindowActivity.class));
+            }
+        });
+
+        testMethod();
+    }
+
+    private void testMethod(){
 //        testCycleModel();
 //        testRetryModel();
 //        testSingleExecuteModel();

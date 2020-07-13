@@ -17,6 +17,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".TopPopwindowActviity"/>
+        <activity android:name=".CycleTopPopWindowActivity"/>
+
         <service android:name=".service.TestScreenShotService"
             android:enabled="true"
             android:foregroundServiceType="mediaProjection" />
