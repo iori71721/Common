@@ -1,5 +1,8 @@
 package com.iori.custom.common;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -8,23 +11,65 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.iori.custom.common.executeModel.SingleExecuteModel;
+import com.iori.custom.common.image.Screenshoter;
 import com.iori.custom.common.reflect.ReflectHelper;
 import com.iori.custom.common.repeatModel.CycleModel;
 import com.iori.custom.common.repeatModel.RetryModel;
+import com.iori.custom.common.service.BaseScreenshotService;
+import com.iori.custom.common.service.TestScreenShotService;
 
 public class MainActivity extends AppCompatActivity {
+    private final int screenShotRequestCode=1;
     private int cycleCount;
     private Handler handler;
-    RetryModel retryModel;
+    private RetryModel retryModel;
+    private Screenshoter screenShoter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler=new Handler();
 //        testCycleModel();
-        testRetryModel();
+//        testRetryModel();
 //        testSingleExecuteModel();
 //        testReflectHelper();
+        testScreenShot();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case screenShotRequestCode:
+                    screenShoter.fetchScreenShot(this,resultCode,data, TestScreenShotService.class);
+                    break;
+            }
+        }
+    }
+
+    private void testScreenShot(){
+        initScreenShoter();
+    }
+
+    private void initScreenShoter() {
+        screenShoter = new Screenshoter(new Screenshoter.ScreenShotBehavior() {
+            @Override
+            public void screenShot(Bitmap bitmap) {
+            }
+
+            @Override
+            public Intent generateScreenShotServiceIntent(Context context, Class serviceClass, int width, int height, int dpi, int resultCode, Intent onActivityResultScreenCaptureIntent) {
+                return BaseScreenshotService.generateBaseScreenShotIntent(context,serviceClass,width,height,dpi,resultCode,onActivityResultScreenCaptureIntent);
+            }
+        });
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                screenShoter.startScreenShot(MainActivity.this,screenShotRequestCode);
+            }
+        },3000);
+
     }
 
     private void testReflectHelper(){
