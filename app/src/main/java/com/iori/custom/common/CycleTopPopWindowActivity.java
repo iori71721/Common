@@ -42,7 +42,13 @@ public class CycleTopPopWindowActivity extends AppCompatActivity {
             }
         };
         testAddMessage();
-        systemTopPopWindow.autoShow();
+        systemTopPopWindow.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        systemTopPopWindow.stopAndClear();
+        super.onDestroy();
     }
 
     private void testAddMessage(){

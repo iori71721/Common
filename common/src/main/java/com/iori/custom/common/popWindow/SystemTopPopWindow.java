@@ -12,8 +12,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * useage
  * 1.constructor
- * 2.{@link #autoShow()}
+ * 2.{@link #start()}
  * 3.{@link #addMessage(Object)}
+ * 4.when activity destroy call {@link #stop()}
  * @param <D> window data
  */
 public abstract class SystemTopPopWindow<D> {
@@ -26,30 +27,7 @@ public abstract class SystemTopPopWindow<D> {
     private final Handler handler;
     public int delayCloseMs=2*1000;
     private boolean showFinish=false;
-
-    protected abstract View generateContentView(Context context);
-
-    protected abstract void drawMessageLayout(Handler handler, View messageLayout, D message);
-
-    private void showMessage(Handler handler, View messageLayout, D message){
-        drawMessageLayout(handler,messageLayout,message);
-        attachView.post(new Runnable() {
-            @Override
-            public void run() {
-                fullWidthTopPopWindow.show();
-            }
-        });
-    }
-
-    public void autoShow(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                D addMessage=takeMessage();
-                showMessage(handler,contentView,addMessage);
-            }
-        }).start();
-    }
+    private boolean stop=false;
 
     public SystemTopPopWindow(Context context, View attachView, final Handler handler) {
         this.context=context;
@@ -86,7 +64,9 @@ public abstract class SystemTopPopWindow<D> {
             @Override
             public void endClose() {
                 showFinish=true;
-                autoShow();
+                if(!stop) {
+                    autoShow();
+                }
             }
         });
         fullWidthTopPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -102,6 +82,30 @@ public abstract class SystemTopPopWindow<D> {
                 }
             }
         });
+    }
+
+    protected abstract View generateContentView(Context context);
+
+    protected abstract void drawMessageLayout(Handler handler, View messageLayout, D message);
+
+    private void showMessage(Handler handler, View messageLayout, D message){
+        drawMessageLayout(handler,messageLayout,message);
+        attachView.post(new Runnable() {
+            @Override
+            public void run() {
+                fullWidthTopPopWindow.show();
+            }
+        });
+    }
+
+    private void autoShow(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                D addMessage=takeMessage();
+                showMessage(handler,contentView,addMessage);
+            }
+        }).start();
     }
 
     private D takeMessage(){
@@ -126,5 +130,19 @@ public abstract class SystemTopPopWindow<D> {
             Log.i(TAG, "addMessage: error "+e);
             e.printStackTrace();
         }
+    }
+
+    public void start(){
+        stop=false;
+        autoShow();
+    }
+
+    public void stop(){
+        stop=true;
+    }
+
+    public void stopAndClear(){
+        stop();
+        blockingQueue.clear();
     }
 }

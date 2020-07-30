@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 //        testRetryModel();
 //        testSingleExecuteModel();
 //        testReflectHelper();
-        testScreenShot();
+//        testScreenShot();
     }
 
     @Override
