@@ -26,6 +26,7 @@ public abstract class SystemTopPopWindow<D> {
     private View attachView;
     private final Handler handler;
     public int delayCloseMs=2*1000;
+    public int delayAfterUserDismissMs=10*1000;
     private boolean showFinish=false;
     private boolean stop=false;
 
@@ -78,7 +79,7 @@ public abstract class SystemTopPopWindow<D> {
                         public void run() {
                             autoShow();
                         }
-                    }, delayCloseMs);
+                    }, delayAfterUserDismissMs);
                 }
             }
         });
