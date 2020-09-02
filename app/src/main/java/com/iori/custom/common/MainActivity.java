@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Screenshoter screenShoter;
     private Button topPopWindow;
     private Button cycleTopPopWindow;
+    private Button incOrDecCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,CycleTopPopWindowActivity.class));
+            }
+        });
+        incOrDecCount=findViewById(R.id.incOrDecCount);
+        incOrDecCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,IncOrDecCountActivity.class));
             }
         });
 

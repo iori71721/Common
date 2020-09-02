@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <Button
+        android:id="@+id/dec"
+        style="@style/com_iori_custom_common_inc_button"
+        android:text="－"
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/count"
+        android:layout_weight="1"
+        android:text="1"
+        style="@style/com_iori_custom_common_inc_button"
+        android:textColor="@android:color/black"
+        android:background="@drawable/count_edittext_background"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/inc"
+        style="@style/com_iori_custom_common_inc_button"
+        android:text="＋"/>
+
+</LinearLayout>

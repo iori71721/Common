@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="com_iori_custom_common_inc_button">
+        <item name="android:background">@drawable/com_iori_custom_common_gray_frame</item>
+        <item name="android:textSize">@dimen/com_iori_custom_common_normalFont</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/com_iori_custom_common_gray</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/com_iori_custom_common_paddingSmall</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+</resources>

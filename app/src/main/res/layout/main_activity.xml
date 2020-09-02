@@ -22,6 +22,12 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/cycleTopPopWindow"
                 android:text="上方彈出視窗循環訊息測試"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/incOrDecCount"
+                android:text="數值加減器"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
