@@ -12,6 +12,7 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.iori.custom.common.executeModel.InOrderExecuteModel;
 import com.iori.custom.common.executeModel.SingleExecuteModel;
 import com.iori.custom.common.image.Screenshoter;
 import com.iori.custom.common.reflect.ReflectHelper;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private Button topPopWindow;
     private Button cycleTopPopWindow;
     private Button incOrDecCount;
+    private int taskCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +69,48 @@ public class MainActivity extends AppCompatActivity {
 //        testSingleExecuteModel();
 //        testReflectHelper();
 //        testScreenShot();
+//        testInOrderExecuteModel();
+    }
+
+    private void testInOrderExecuteModel(){
+        final InOrderExecuteModel<String> inOrderExecuteModel=new InOrderExecuteModel<String>() {
+            @Override
+            protected void executeTask(final String message, final InOrderExecuteModel<String> executeModel) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("iori_InOrderExecuteModel", "run: task data "+message);
+                        executeModel.popAndExecute();
+                    }
+                },5000);
+            }
+        };
+        inOrderExecuteModel.start();
+        inOrderExecuteModel.start();
+        inOrderExecuteModel.start();
+        final int delayTime=2*1000;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0;i<10;i++){
+                    inOrderExecuteModel.addMessage("task "+i);
+                    Log.d("iori_InOrderExecuteModel", "run: add task "+i);
+                    try {
+                        Thread.sleep(delayTime);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("iori_InOrderExecuteModel", "run: stop and clear");
+                inOrderExecuteModel.stopAndClear();
+            }
+        },25000);
     }
 
     @Override
