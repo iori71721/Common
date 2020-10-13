@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="com_iori_custom_common_viewHolder"></item>
+    <item type="id" name="com_iori_custom_common_dropDownViewHolder"></item>
+</resources>
