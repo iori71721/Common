@@ -54,17 +54,31 @@ public abstract class CommonBaseAdapter<V,D> extends BaseAdapter {
         return convertView;
     }
 
-    protected void addItemData(D itemData){
+    public void addItemData(D itemData){
         synchronized (datas){
             datas.add(itemData);
             notifyDataSetChanged();
         }
     }
 
-    protected void addItemDatas(Collection<D> itemDatas){
+    public void addItemDatas(Collection<D> itemDatas){
         synchronized (datas){
             datas.addAll(itemDatas);
             notifyDataSetChanged();
+        }
+    }
+
+    public void clear(){
+        synchronized (datas){
+            datas.clear();
+            notifyDataSetChanged();
+        }
+    }
+
+    public void reload(Collection<D> itemDatas){
+        synchronized (datas){
+            datas.clear();
+            addItemDatas(itemDatas);
         }
     }
 
