@@ -90,13 +90,18 @@ public abstract class SystemTopPopWindow<D> {
     protected abstract void drawMessageLayout(Handler handler, View messageLayout, D message);
 
     private void showMessage(Handler handler, View messageLayout, D message){
+        if(stop){
+            return;
+        }
         drawMessageLayout(handler,messageLayout,message);
-        attachView.post(new Runnable() {
-            @Override
-            public void run() {
-                fullWidthTopPopWindow.show();
-            }
-        });
+        if(attachView != null) {
+            attachView.post(new Runnable() {
+                @Override
+                public void run() {
+                    fullWidthTopPopWindow.show();
+                }
+            });
+        }
     }
 
     private void autoShow(){
@@ -120,10 +125,6 @@ public abstract class SystemTopPopWindow<D> {
         return message;
     }
 
-    /**
-     * test public to add message
-     * @param message
-     */
     public void addMessage(D message){
         try {
             blockingQueue.put(message);
