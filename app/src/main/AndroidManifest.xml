@@ -21,6 +21,7 @@
         <activity android:name=".TopPopwindowActviity"/>
         <activity android:name=".CycleTopPopWindowActivity"/>
         <activity android:name=".IncOrDecCountActivity"/>
+        <activity android:name=".CountdownActivity"/>
 
         <service android:name=".service.TestScreenShotService"
             android:enabled="true"

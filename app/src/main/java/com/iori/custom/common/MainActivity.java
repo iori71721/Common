@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Button cycleTopPopWindow;
     private Button incOrDecCount;
     private int taskCount;
+    private Button countDown;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,IncOrDecCountActivity.class));
+            }
+        });
+
+        countDown=findViewById(R.id.countDown);
+        countDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,CountdownActivity.class));
             }
         });
 

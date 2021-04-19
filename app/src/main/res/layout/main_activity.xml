@@ -28,6 +28,12 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/incOrDecCount"
                 android:text="數值加減器"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/countDown"
+                android:text="倒數計時"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
