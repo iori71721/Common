@@ -173,6 +173,14 @@ public class Countdown {
         this.countdownListener = countdownListener;
     }
 
+    public boolean isStart() {
+        return start;
+    }
+
+    public int getRemainingSec() {
+        return remainingSec;
+    }
+
     private class CountdownTask extends TimerTask{
 
         @Override
