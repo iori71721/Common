@@ -100,6 +100,11 @@ public class CountdownActivity extends AppCompatActivity {
             public void update(int remainingSec) {
                 updateTime(remainingSec);
             }
+
+            @Override
+            public void finish(int remainingSec) {
+                updateTime(remainingSec);
+            }
         });
     }
 

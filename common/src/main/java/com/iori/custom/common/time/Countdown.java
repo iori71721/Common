@@ -36,15 +36,27 @@ public class Countdown {
         }
     }
 
-    public void stop(){
+    private void stopOrFinish(boolean stop){
         if(start){
             start=false;
             timer.cancel();
             readyNewTimer();
             if(countdownListener != null){
-                countdownListener.stop(remainingSec);
+                if(stop) {
+                    countdownListener.stop(remainingSec);
+                }else{
+                    countdownListener.finish(remainingSec);
+                }
             }
         }
+    }
+
+    private void finish(){
+        stopOrFinish(false);
+    }
+
+    public void stop(){
+        stopOrFinish(true);
     }
 
     private void readyNewTimer() {
@@ -188,7 +200,7 @@ public class Countdown {
             remainingSec-= countdownIntervalSec;
             if(remainingSec <=0 ){
                 remainingSec=0;
-                stop();
+                finish();
             }else{
                 if(countdownListener != null){
                     countdownListener.update(remainingSec);
@@ -201,6 +213,7 @@ public class Countdown {
         void start();
         void stop(int remainingSec);
         void update(int remainingSec);
+        void finish(int remainingSec);
     }
 
     public static enum CalcTimeType{
