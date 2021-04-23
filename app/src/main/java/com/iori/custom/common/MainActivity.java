@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private Button incOrDecCount;
     private int taskCount;
     private Button countDown;
+    private Button cycleImageView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,CountdownActivity.class));
+            }
+        });
+
+        cycleImageView=findViewById(R.id.cycleImageView);
+        cycleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,CycleImageActivity.class));
             }
         });
 
