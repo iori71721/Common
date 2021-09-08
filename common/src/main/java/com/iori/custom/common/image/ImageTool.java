@@ -3,11 +3,16 @@ package com.iori.custom.common.image;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+
+import androidx.annotation.Nullable;
 
 public class ImageTool {
     /**
@@ -128,5 +133,36 @@ public class ImageTool {
             inSampleSize  =1;
         }
         return inSampleSize;
+    }
+
+    public static @Nullable Bitmap readBitmapInSizeByPath(String path, int outputWidth, int outputHeight){
+        Bitmap readBitmap=null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        int srcWidth = options.outWidth;
+        int srcHeight = options.outHeight;
+        int inSampleSize = com.iori.custom.common.image.ImageTool.calcInSampleSize(srcWidth,srcHeight,outputWidth,outputHeight);
+
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = inSampleSize;
+        readBitmap=BitmapFactory.decodeFile(path, options);
+
+        return readBitmap;
+    }
+
+    public static @Nullable Bitmap resizeBitmap(Bitmap bitmap,int outputWidth, int outputHeight){
+        if(bitmap == null){
+            return bitmap;
+        }
+
+        int inSampleSize = com.iori.custom.common.image.ImageTool.calcInSampleSize(bitmap.getWidth(),bitmap.getHeight()
+                ,outputWidth,outputHeight);
+        Matrix scaleMatrix=new Matrix();
+        float scale=1.0f/inSampleSize;
+        scaleMatrix.postScale(scale,scale);
+
+        Bitmap resizeBitmap=Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),scaleMatrix,true);
+        return resizeBitmap;
     }
 }
