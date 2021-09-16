@@ -32,4 +32,24 @@ public class StringTool {
         }
         return input;
     }
+
+    public static String generateDelimiterString(List<String> input,String delimiter){
+        if(input == null){
+            return "";
+        }
+
+        StringBuilder stringBuilder=new StringBuilder(500);
+
+        String addString="";
+        synchronized (input) {
+            for (int i = 0; i < input.size(); i++) {
+                addString = input.get(i);
+                stringBuilder.append(addString);
+                if (i != input.size() - 1) {
+                    stringBuilder.append(delimiter);
+                }
+            }
+        }
+        return stringBuilder.toString();
+    }
 }
