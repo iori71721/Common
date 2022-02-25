@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -45,5 +46,16 @@ public class ViewTool {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         return params.height;
+    }
+
+    /**
+     * get view by {@link Activity#setContentView(View)}
+     * @param activity
+     * @return
+     */
+    public static View getContentView(Activity activity){
+        ViewGroup viewGroup=(ViewGroup) activity.getWindow().getDecorView();
+        FrameLayout frameLayout=viewGroup.findViewById(android.R.id.content);
+        return frameLayout.getChildAt(0);
     }
 }
