@@ -62,8 +62,10 @@ public abstract class CompatibleWrapContentViewGroup extends ViewGroup {
         maxWidth = Math.max(lineWidth, maxWidth);
 //<!--totalHeight 跟 maxWidth都是FlowLayout渴望得到的尺寸-->
 //<!--至於合不合適，通過resolveSize再來判斷一遍，當然，如果你非要按照自己的尺寸來，也可以設定，但是不太合理-->
+
         totalHeight = resolveSize(totalHeight + paddingBottom + paddingTop, heightMeasureSpec);
         lineWidth = resolveSize(maxWidth + paddingLeft + paddingRight, widthMeasureSpec);
+
         measureWidth=lineWidth;
         measureHeight=totalHeight;
         setMeasuredDimension(lineWidth, totalHeight);
@@ -101,11 +103,19 @@ public abstract class CompatibleWrapContentViewGroup extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int count = getChildCount();
         int currentHeight = 0;
+
+        int paddingLeft = getPaddingLeft();
+        int paddingRight = getPaddingRight();
+        int paddingBottom = getPaddingBottom();
+        int paddingTop = getPaddingTop();
+
         for (int i = 0 ; i < count ; i++) {
             View view = getChildAt(i);
             int height = view.getMeasuredHeight();
             int width = view.getMeasuredWidth();
-            view.layout(l, currentHeight, l + width, currentHeight + height);
+
+//            修正padding 起點
+            view.layout(0, currentHeight, width, currentHeight + height);
             currentHeight += height;
         }
     }

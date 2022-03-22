@@ -28,4 +28,16 @@ public class ViewTool {
         gridView.setLayoutParams(params);
         return totalHeight;
     }
+
+    /**
+     * @param view
+     * @param width
+     * @param height
+     */
+    public static void setHW(View view,int width,int height){
+        ViewGroup.LayoutParams layoutParams=view.getLayoutParams();
+        layoutParams.width=width;
+        layoutParams.height=height;
+        view.setLayoutParams(layoutParams);
+    }
 }
