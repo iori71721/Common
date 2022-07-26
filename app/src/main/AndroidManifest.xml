@@ -23,6 +23,7 @@
         <activity android:name=".IncOrDecCountActivity"/>
         <activity android:name=".CountdownActivity"/>
         <activity android:name=".CycleImageActivity"/>
+        <activity android:name=".TwoCycleColorActivity"/>
 
         <service android:name=".service.TestScreenShotService"
             android:enabled="true"

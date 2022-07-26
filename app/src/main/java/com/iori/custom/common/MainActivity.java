@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private int taskCount;
     private Button countDown;
     private Button cycleImageView;
+    private Button twoCycleColorView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,CycleImageActivity.class));
+            }
+        });
+
+        twoCycleColorView=findViewById(R.id.twoCycleColorView);
+        twoCycleColorView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,TwoCycleColorActivity.class));
             }
         });
 

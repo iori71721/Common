@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
+    android:paddingLeft="10dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.iori.custom.common.view.CycleColorView
+                android:id="@+id/cycleColorView"
+                style="@style/cycle_color_view"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:cycleColor="@color/colorPrimary" />
+
+            <com.iori.custom.common.view.TwoCycleColorView
+                android:id="@+id/twoCycleColorView"
+                style="@style/cycle_color_view"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:cycleColor="@color/colorPrimary"
+                app:outSideStrokeWidth="10dp"/>
+
+            <com.iori.custom.common.view.CycleColorView
+                android:id="@+id/cycleColorView2"
+                style="@style/cycle_color_view"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:cycleColor="@color/red" />
+
+            <com.iori.custom.common.view.TwoCycleColorView
+                android:id="@+id/twoCycleColorView2"
+                style="@style/cycle_color_view"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:cycleColor="@color/red" />
+
+            <com.iori.custom.common.view.TwoHollowCycleColorView
+                android:id="@+id/twoHollowCycleColorView"
+                style="@style/cycle_color_view"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:cycleColor="@color/black"
+                app:hollowCycleColor="@color/white"
+                app:hollowCycleStrokeWidth="10dp"/>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <com.iori.custom.common.view.CycleColorView
+                        android:id="@+id/cycleColorView3"
+                        style="@style/cycle_color_view"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:cycleColor="@color/blue" />
+
+                    <com.iori.custom.common.view.TwoCycleColorView
+                        android:id="@+id/twoCycleColorView3"
+                        style="@style/cycle_color_view"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:cycleColor="@color/blue" />
+
+                    <com.iori.custom.common.view.CycleColorView
+                        android:id="@+id/cycleColorView4"
+                        style="@style/cycle_color_view"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:cycleColor="@color/colorPrimaryDark" />
+
+                    <com.iori.custom.common.view.TwoCycleColorView
+                        android:id="@+id/twoCycleColorView4"
+                        style="@style/cycle_color_view"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:cycleColor="@color/colorPrimaryDark" />
+
+                    <com.iori.custom.common.view.TwoHollowCycleColorView
+                        android:id="@+id/twoHollowCycleColorView2"
+                        style="@style/cycle_color_view"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:cycleColor="@color/red"
+                        app:hollowCycleColor="@color/blue" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

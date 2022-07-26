@@ -40,6 +40,12 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/cycleImageView"
                 android:text="圖片輪播"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/twoCycleColorView"
+                android:text="點擊畫兩個圓圈"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

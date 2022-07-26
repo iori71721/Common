@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -20,8 +21,8 @@ import com.iori.custom.common.R;
  */
 public class CycleColorView extends View {
     private final int defaultSizePx =100;
-    private final int defaultColor= Color.BLACK;
-    private final int drawOffsetPx=1;
+    protected final int defaultColor= Color.BLACK;
+    protected final int drawOffsetPx=1;
     private int cycleColor =defaultColor;
     private int frameColor=defaultColor;
     private int framePaddingPx;
@@ -89,11 +90,13 @@ public class CycleColorView extends View {
         invalidate();
     }
 
-    private void drawCircle(Canvas canvas, int color, int frameWidth, int framePadding){
+    protected void drawCircle(Canvas canvas, int color, int frameWidth, int framePadding){
         Point center=new Point();
         int radius=getMeasuredWidth()/2-frameWidth-framePadding;
-        center.x=getLeft()+frameWidth+framePadding+radius;
-        center.y=getTop()+frameWidth+framePadding+radius;
+
+        center.x=frameWidth+framePadding+radius;
+        center.y=frameWidth+framePadding+radius;
+
         Paint paint = new Paint();
         paint.setColor(color);
         canvas.drawCircle(center.x, center.y, radius, paint);
@@ -104,7 +107,7 @@ public class CycleColorView extends View {
         paint.setColor(color);
         paint.setStrokeWidth(frameWidthPx);
         paint.setStyle(Paint.Style.STROKE);
-        canvas.drawRect(getLeft(), getTop(), getRight()-drawOffsetPx, getBottom()-drawOffsetPx, paint);
+        canvas.drawRect(0,0 , getMeasuredWidth()-drawOffsetPx, getMeasuredWidth()-drawOffsetPx, paint);
     }
 
     @Override
@@ -112,13 +115,21 @@ public class CycleColorView extends View {
         super.onDraw(canvas);
         drawCircle(canvas, cycleColor, frameWidthPx, framePaddingPx);
         if(choose){
-            drawClickedRect(canvas,frameColor,frameWidthPx);
+            drawClickedLayout(canvas);
         }
+    }
+
+    protected void drawClickedLayout(Canvas canvas) {
+        drawClickedRect(canvas,frameColor,frameWidthPx);
     }
 
     public void choose(boolean choose){
         this.choose=choose;
         invalidate();
+    }
+
+    public boolean isChoose() {
+        return choose;
     }
 
     public int getCycleColor() {
