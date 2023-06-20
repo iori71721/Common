@@ -28,9 +28,12 @@ import java.util.concurrent.LinkedBlockingQueue;
  * 4.call finish method to unlock model when data get finish
  *   example:when get load data finish call {@link #finishGetLocalData(List, Task)}
  * @param <D> pagination data type
+ * @param <R> pagination request type
  */
-public class PaginationModel<D> {
+public abstract class PaginationModel<D,R> {
     public static final String TAG=PaginationModel.class.getName();
+    public static final int DEFAULT_PAGE_INDEX=0;
+
     private int remoteTotalCount;
     private int currentLocalCount;
     private int currentRemoteCount;
@@ -49,6 +52,21 @@ public class PaginationModel<D> {
     private final Map<String,Task> waitExecuteTasksMap=new HashMap<>(100);
     private Task currentExecuteTask;
 
+    private final boolean usePageIndexDoPagination;
+
+    public PaginationModel() {
+        this(true);
+    }
+
+    public PaginationModel(boolean usePageIndexDoPagination) {
+        this.usePageIndexDoPagination = usePageIndexDoPagination;
+    }
+
+    /**
+     *
+     * @param index adapter select index
+     * @return
+     */
     private boolean loadData(int index){
         if(currentLocalCount == 0){
             return true;
@@ -63,6 +81,9 @@ public class PaginationModel<D> {
 
     private void addTaskAndExecute(int requestPageIndex, int pageCount, int currentLocalCount){
         TaskInfo taskInfo=new TaskInfo(requestPageIndex,pageCount,currentLocalCount);
+        if(!usePageIndexDoPagination){
+            taskInfo.setRequestData(createRequestData(currentLocalCount,pageCount));
+        }
         Task task=new Task(taskInfo,modelCallback,this);
         synchronized (waitExecuteTasks){
             waitExecuteTasks.add(task);
@@ -82,6 +103,12 @@ public class PaginationModel<D> {
         }
     }
 
+    protected abstract R createRequestData(int currentLocalCount, int pageCount);
+
+    /**
+     *
+     * @param index adapter select index
+     */
     public void getData(int index){
         if(loadData(index)){
             singleExecuteModel.setSingleExecuteBehavior(new SingleExecuteModel.SingleExecuteBehavior() {
@@ -94,7 +121,11 @@ public class PaginationModel<D> {
                         }else{
                             requestPageIndex=currentPageIndex+1;
                         }
-                        addTaskAndExecute(requestPageIndex,pageCount,currentLocalCount);
+                        if(usePageIndexDoPagination) {
+                            addTaskAndExecute(requestPageIndex, pageCount, currentLocalCount);
+                        }else{
+                            addTaskAndExecute(DEFAULT_PAGE_INDEX, pageCount, currentLocalCount);
+                        }
                     }
                 }
             });
@@ -191,7 +222,9 @@ public class PaginationModel<D> {
     public void finishGetRemoteData(List<D> remoteDatas,int remoteTotalCount,int pageIndex,int pageCount,Task executeTask){
         if(!executeTask.isCancel()) {
 
-            currentPageIndex = pageIndex;
+            if(usePageIndexDoPagination) {
+                currentPageIndex = pageIndex;
+            }
             this.remoteTotalCount = remoteTotalCount;
             currentRemoteCount += updateGetRemoteData(remoteDatas, remoteTotalCount, pageIndex, pageCount);
             if (currentLocalCount != currentRemoteCount) {
@@ -263,6 +296,10 @@ public class PaginationModel<D> {
 
     public Task getCurrentExecuteTask() {
         return currentExecuteTask;
+    }
+
+    public boolean isUsePageIndexDoPagination() {
+        return usePageIndexDoPagination;
     }
 
     public static class Task{
@@ -338,21 +375,30 @@ public class PaginationModel<D> {
         public @interface Status{}
     }
 
-    public static class TaskInfo{
+    public static class TaskInfo<R>{
         private int requestPageIndex;
         private int pageCount;
         private int currentLocalCount;
+        private R requestData;
 
         public TaskInfo(int requestPageIndex, int pageCount, int currentLocalCount) {
             this.requestPageIndex = requestPageIndex;
             this.pageCount = pageCount;
             this.currentLocalCount = currentLocalCount;
         }
+
+        void setRequestData(R requestData) {
+            this.requestData = requestData;
+        }
+
+        public R getRequestData() {
+            return requestData;
+        }
     }
 
-    public static interface PaginationModelCallback<D>{
-        void getLocalData(PaginationModel<D> paginationModel,int currentLocalCount,int getCount,Task executeTask);
-        void getRemoteData(PaginationModel<D> paginationModel,int pageIndex,int pageCount,Task executeTask);
-        void cancel(PaginationModel<D> paginationModel,Task cancelTask);
+    public static interface PaginationModelCallback<D,R>{
+        void getLocalData(PaginationModel<D,R> paginationModel,int currentLocalCount,int getCount,Task executeTask);
+        void getRemoteData(PaginationModel<D,R> paginationModel,int pageIndex,int pageCount,Task executeTask);
+        void cancel(PaginationModel<D,R> paginationModel,Task cancelTask);
     }
 }
