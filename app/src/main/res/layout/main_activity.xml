@@ -46,6 +46,12 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/twoCycleColorView"
                 android:text="點擊畫兩個圓圈"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/dropListView"
+                android:text="可拖曳ListView"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

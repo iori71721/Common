@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Button countDown;
     private Button cycleImageView;
     private Button twoCycleColorView;
+    private Button dropListView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,6 +85,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,TwoCycleColorActivity.class));
+            }
+        });
+
+        dropListView=findViewById(R.id.dropListView);
+        dropListView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,DropListViewActivity.class));
             }
         });
 

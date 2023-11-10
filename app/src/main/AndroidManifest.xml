@@ -24,6 +24,7 @@
         <activity android:name=".CountdownActivity"/>
         <activity android:name=".CycleImageActivity"/>
         <activity android:name=".TwoCycleColorActivity"/>
+        <activity android:name=".DropListViewActivity"/>
 
         <service android:name=".service.TestScreenShotService"
             android:enabled="true"
